@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Komodo Project File - DO NOT EDIT -->
+<project id="da04c18b-59ab-400c-99e5-60cb1cf5ddb8" kpf_version="4" name="NetDb.kpf">
+<preference-set idref="da04c18b-59ab-400c-99e5-60cb1cf5ddb8">
+  <boolean id="import_live">1</boolean>
+<preference-set id="testPlans">
+<preference-set id="NetDb Test">
+  <string id="command_line"></string>
+  <string relative="url" id="directory"></string>
+  <string id="language">Ruby - Rake tests</string>
+</preference-set>
+</preference-set>
+</preference-set>
+</project>

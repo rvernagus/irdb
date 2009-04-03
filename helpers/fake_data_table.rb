@@ -1,0 +1,3 @@
+class FakeDataTable
+  
+end
