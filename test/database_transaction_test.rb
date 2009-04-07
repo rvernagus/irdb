@@ -3,11 +3,15 @@ require "database_test_fixture"
 class DatabaseTransactionTest  < Test::Unit::TestCase
   include DatabaseTestFixture
   
-  def test_begins_a_transaction
-    assert !@provider.connection.transaction_started?
+  def test_yields_expected
+    expected = @provider.connection.transaction
+    was_yielded = false
     
-    @db.transaction
+    @db.transaction do |t|
+      was_yielded = true
+      assert_same expected, t
+    end
     
-    assert @provider.connection.transaction_started?
+    assert was_yielded
   end
 end

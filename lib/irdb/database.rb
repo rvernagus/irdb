@@ -19,7 +19,7 @@ module IRDb
     
     def transaction
       t = @conn.begin_transaction
-      
+      yield t
     end
   end
 end
