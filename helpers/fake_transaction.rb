@@ -4,10 +4,18 @@ class FakeTransaction
   end
   
   def commit
-    @commited = true
+    @committed = true
   end
   
   def rollback
     @rolled_back = true
+  end
+  
+  def committed?
+    @committed
+  end
+  
+  def rolled_back?
+    @rolled_back
   end
 end
