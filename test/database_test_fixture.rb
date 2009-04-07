@@ -7,5 +7,6 @@ module DatabaseTestFixture
     @provider = FakeProvider.new
     @db = Database.new(@provider, "connection string")
     @conn = @db.instance_variable_get("@conn")
+    @transaction = @provider.connection.transaction
   end
 end
