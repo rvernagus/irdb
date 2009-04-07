@@ -31,4 +31,11 @@ class DatabaseTransactionTest  < Test::Unit::TestCase
     assert !@transaction.committed?
     assert @transaction.rolled_back?
   end
+  
+  # Actually needs to be before the call to begin_transaction
+  def test_opens_connection_before_yield
+    @db.transaction do |t|
+      assert @provider.connection.opened?
+    end
+  end
 end

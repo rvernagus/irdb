@@ -18,7 +18,7 @@ module IRDb
     end
     
     def transaction
-      #connection do |conn|
+      connection do |conn|
         t = @conn.begin_transaction
         begin
           yield t if block_given?
@@ -27,7 +27,7 @@ module IRDb
           t.rollback
           raise ex
         end
-      #end
+      end
     end
   end
 end
