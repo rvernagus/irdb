@@ -19,7 +19,12 @@ module IRDb
     
     def transaction
       t = @conn.begin_transaction
-      yield t
+      begin
+        yield t if block_given?
+        t.commit
+      ensure
+        t.rollback
+      end
     end
   end
 end
