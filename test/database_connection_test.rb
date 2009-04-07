@@ -1,27 +1,9 @@
-require "test/unit"
-require "lib/irdb"
-require "helpers/fake_provider"
+require "database_test_fixture"
 
-class DatabaseTest < Test::Unit::TestCase
-  def setup
-    @provider = FakeProvider.new
-    @db = Database.new(@provider, "connection string")
-    @conn = @db.instance_variable_get("@conn")
-  end
+class DatabaseConnectionTest < Test::Unit::TestCase
+  include DatabaseTestFixture
   
-  def test_stores_provider
-    assert_same @provider, @db.provider
-  end
-  
-  def test_stores_connection
-    assert_same @provider.connection, @conn
-  end
-  
-  def test_sets_connection_string_on_conn
-    assert_equal "connection string", @conn.connection_string
-  end
-  
-  def test_connection_opens_conn
+  def test_opens_conn
     assert !@conn.opened?
     
     @db.connection
@@ -29,7 +11,7 @@ class DatabaseTest < Test::Unit::TestCase
     assert @conn.opened?
   end
   
-  def test_connection_closes_conn
+  def test_closes_conn
     assert !@conn.closed?
     
     @db.connection
@@ -37,7 +19,7 @@ class DatabaseTest < Test::Unit::TestCase
     assert @conn.closed?
   end
   
-  def test_connection_ensures_conn_closed
+  def test_ensures_conn_closed
     def @conn.open
       raise Exception
     end
