@@ -18,13 +18,16 @@ module IRDb
     end
     
     def transaction
-      t = @conn.begin_transaction
-      begin
-        yield t if block_given?
-        t.commit
-      ensure
-        t.rollback
-      end
+      #connection do |conn|
+        t = @conn.begin_transaction
+        begin
+          yield t if block_given?
+          t.commit
+        rescue Exception => ex
+          t.rollback
+          raise ex
+        end
+      #end
     end
   end
 end

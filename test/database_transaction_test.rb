@@ -19,6 +19,7 @@ class DatabaseTransactionTest  < Test::Unit::TestCase
     
     @db.transaction
     
+    assert !@transaction.rolled_back?
     assert @transaction.committed?
   end
   
@@ -27,6 +28,7 @@ class DatabaseTransactionTest  < Test::Unit::TestCase
     
     assert_raise(Exception) { @db.transaction { |t| raise Exception }}
     
+    assert !@transaction.committed?
     assert @transaction.rolled_back?
   end
 end
