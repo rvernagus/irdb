@@ -2,11 +2,8 @@ module IRDb
   class DbProviderFactory
     def get_provider(provider_name)
       provider = System::Data::Common::DbProviderFactories.get_factory(provider_name)
-      
-      if defined?(System::Data::DataTable)
-        def provider.create_data_table
-          System::Data::DataTable.new
-        end
+      def provider.create_data_table
+        System::Data::DataTable.new
       end
       
       provider

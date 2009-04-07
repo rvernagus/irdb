@@ -5,31 +5,30 @@ include IRDb
 DbProviderFactories = System::Data::Common::DbProviderFactories
 
 class DbProviderFactoryTest < Test::Unit::TestCase
+  def setup
+    @provider_factory = DbProviderFactory.new
+  end
+  
   def test_calls_dotnet_method
     expected = Object.new
     DbProviderFactories.factory = expected
-    provider_factory = DbProviderFactory.new
-    result = provider_factory.get_provider("provider name")
+    provider = @provider_factory.get_provider("provider name")
     
     assert_equal "provider name", DbProviderFactories.provider_name
-    assert_equal expected, result
+    assert_equal expected, provider
   end
   
-  #def test_does_not_add_create_data_table_method_if_namespace_is_not_defined
-  #  result = ProviderFactory.get_provider("System.Data.SqlClient")
-  #  assert !defined?(System::Data::DataTable)
-  #  assert !result.respond_to?(:create_data_table)
-  #end
-  #
-  #def test_adds_create_data_table_method_if_namespace_defined
-  #  ProviderFactory.class_eval do
-  #    def defined?(constant)
-  #      true
-  #    end
-  #  end
-  #  result = ProviderFactory.get_provider("System.Data.SqlClient")
-  #  assert defined?(System::Data::DataTable)
-  #  assert result.respond_to?(:create_data_table)
-  #end
+  def test_adds_create_data_table_method
+    provider = @provider_factory.get_provider("provider name")
+    
+    assert provider.respond_to?(:create_data_table)
+  end
+  
+  def test_create_data_table_returns_expected
+    provider = @provider_factory.get_provider("provider name")
+    result = provider.create_data_table
+    
+    assert_equal FakeDataTable, result.class
+  end
 end
 
