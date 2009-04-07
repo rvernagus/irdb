@@ -16,5 +16,10 @@ module IRDb
         @conn.close
       end
     end
+    
+    def transaction
+      t = @conn.begin_transaction
+      
+    end
   end
 end
