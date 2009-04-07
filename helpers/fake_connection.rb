@@ -1,8 +1,11 @@
+require "helpers/fake_transaction"
+
 class FakeConnection
-  attr_accessor :connection_string
+  attr_accessor :connection_string, :transaction
   
   def initialize
-    @opened = @closed = @trans_started = false
+    @opened = @closed = false
+    @transaction = FakeTransaction.new
   end
   
   def open
@@ -14,7 +17,7 @@ class FakeConnection
   end
   
   def begin_transaction
-    @trans_started = true
+    @transaction
   end
   
   def opened?
