@@ -2,7 +2,7 @@ $:.unshift(File.dirname(__FILE__)) unless
   $:.include?(File.dirname(__FILE__)) || $:.include?(File.expand_path(File.dirname(__FILE__)))
   
 require "irdb/database"
-require "irdb/provider_factory"
+require "irdb/db_provider_factory"
 begin
   require "System.Data"
 rescue LoadError

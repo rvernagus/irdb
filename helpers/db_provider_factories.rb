@@ -5,17 +5,11 @@ module System
     module Common
       class DbProviderFactories
         class << self
-          def get_factory_returns(obj)
-            @@last_call_return = obj
-          end
-          
-          def get_factory_last_called_with
-            @@last_call
-          end
+          attr_accessor :provider_name, :factory
           
           def get_factory(name)
-            @@last_call = name
-            @@last_call_return
+            self.provider_name = name
+            factory
           end
         end
       end
