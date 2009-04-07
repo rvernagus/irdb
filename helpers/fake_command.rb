@@ -1,5 +1,6 @@
 class FakeCommand
-  attr_accessor :connection, :command_text, :query_result
+  attr_accessor :connection, :command_text, :query_result,
+                :transaction
   
   def initialize
     self.query_result = {}
