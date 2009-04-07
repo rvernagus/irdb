@@ -12,8 +12,10 @@ class SqlTransactionTest < Test::Unit::TestCase
   end
   
   def test_created_successfully
-    @db.transaction do |t|
-      assert_not_nil t
+    @db.connection do |c|
+      @db.transaction do |t|
+        assert_not_nil t
+      end
     end
   end
 end
