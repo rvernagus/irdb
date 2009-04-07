@@ -1,6 +1,6 @@
 require "test/unit"
 require "lib/irdb"
-require "helpers/db_provider_factories"
+require "helpers/fake_system_data"
 include IRDb
 DbProviderFactories = System::Data::Common::DbProviderFactories
 
