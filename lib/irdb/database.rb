@@ -20,14 +20,25 @@ module IRDb
     def transaction
       connection do |conn|
         t = @conn.begin_transaction
+        @current_transaction = t
         begin
           yield t if block_given?
           t.commit
         rescue Exception
           t.rollback
           raise
+        ensure
+          @current_transaction = nil
         end
       end
+    end
+    
+    def command(commmand_text)
+      cmd = provider.create_command
+      cmd.connection = @conn
+      cmd.transaction = @current_transaction
+      cmd.command_text = commmand_text
+      yield cmd
     end
   end
 end
