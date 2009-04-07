@@ -8,7 +8,8 @@ class DbProviderFactoryTest < Test::Unit::TestCase
   def test_calls_dotnet_method
     expected = Object.new
     DbProviderFactories.factory = expected
-    result = DbProviderFactory.get_provider("provider name")
+    provider_factory = DbProviderFactory.new
+    result = provider_factory.get_provider("provider name")
     
     assert_equal "provider name", DbProviderFactories.provider_name
     assert_equal expected, result
