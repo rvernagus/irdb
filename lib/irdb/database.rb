@@ -4,8 +4,17 @@ module IRDb
     
     def initialize(provider, connection_string)
       @provider = provider
-      @connection = @provider.create_connection
-      @connection.connection_string = connection_string
+      @conn = @provider.create_connection
+      @conn.connection_string = connection_string
+    end
+    
+    def connection
+      begin
+        @conn.open
+        yield @conn if block_given?
+      ensure
+        @conn.close
+      end
     end
   end
 end
