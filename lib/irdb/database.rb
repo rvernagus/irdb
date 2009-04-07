@@ -23,7 +23,7 @@ module IRDb
         begin
           yield t if block_given?
           t.commit
-        rescue Exception => ex
+        rescue Exception
           t.rollback
           raise
         end
