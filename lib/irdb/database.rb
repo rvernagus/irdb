@@ -25,7 +25,7 @@ module IRDb
           t.commit
         rescue Exception => ex
           t.rollback
-          raise ex
+          raise
         end
       end
     end
