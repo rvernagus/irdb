@@ -38,5 +38,13 @@ module IRDb
       cmd.command_text = commmand_text
       yield cmd
     end
+    
+    def execute_scalar(command_text)
+      connection do |c|
+        command(command_text) do |cmd|
+          yield cmd
+        end
+      end
+    end
   end
 end
