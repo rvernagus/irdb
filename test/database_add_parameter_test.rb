@@ -31,4 +31,22 @@ class DatabaseExecuteScalarTest < Test::Unit::TestCase
     
     assert_equal "value", @cmd.parameters.first.value
   end
+  
+  def test_can_set_db_type_by_type
+    @db.add_parameter(@cmd, :type => :expected)
+    
+    assert_equal :expected, @cmd.parameters.first.db_type
+  end
+  
+  def test_can_set_db_type_by_db_type
+    @db.add_parameter(@cmd, :db_type => :expected)
+    
+    assert_equal :expected, @cmd.parameters.first.db_type
+  end
+  
+  def test_can_set_direction
+    @db.add_parameter(@cmd, :direction => :expected)
+    
+    assert_equal :expected, @cmd.parameters.first.direction
+  end
 end

@@ -1,3 +1,4 @@
 class FakeParameter
-  attr_accessor :value, :db_type, :parameter_name
+  attr_accessor :value, :db_type, :parameter_name,
+                :direction
 end
