@@ -1,6 +1,6 @@
 require "database_test_fixture"
 
-class DatabaseConnectionTest < Test::Unit::TestCase
+class DatabaseTest < Test::Unit::TestCase
   include DatabaseTestFixture
   
   def test_stores_provider
