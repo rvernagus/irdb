@@ -25,4 +25,10 @@ class DatabaseExecuteScalarTest < Test::Unit::TestCase
     
     assert_equal "name", @cmd.parameters.first.parameter_name
   end
+  
+  def test_can_set_value
+    @db.add_parameter(@cmd, :value => "value")
+    
+    assert_equal "value", @cmd.parameters.first.value
+  end
 end

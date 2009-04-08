@@ -42,6 +42,7 @@ module IRDb
     def add_parameter(cmd, options={})
       param = @provider.create_parameter
       param.parameter_name = options[:name] || options[:parameter_name]
+      param.value = options[:value]
       cmd.parameters.add(param)
     end
     
