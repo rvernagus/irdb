@@ -1,9 +1,13 @@
 class FakeCommand
   attr_accessor :connection, :command_text, :query_result,
-                :transaction
+                :transaction, :parameters
   
   def initialize
     self.query_result = {}
+    self.parameters = []
+    def parameters.add(item)
+      self << item
+    end
   end
   
   def execute_non_query
