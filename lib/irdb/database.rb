@@ -39,6 +39,12 @@ module IRDb
       yield cmd
     end
     
+    def add_parameter(cmd, options={})
+      param = @provider.create_parameter
+      param.parameter_name = options[:name] || options[:parameter_name]
+      cmd.parameters.add(param)
+    end
+    
     def execute_scalar(command_text)
       connection do |c|
         command(command_text) do |cmd|
