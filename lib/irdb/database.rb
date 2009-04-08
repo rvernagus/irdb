@@ -42,7 +42,8 @@ module IRDb
     def execute_scalar(command_text)
       connection do |c|
         command(command_text) do |cmd|
-          yield cmd
+          yield cmd if block_given?
+          cmd.execute_scalar
         end
       end
     end

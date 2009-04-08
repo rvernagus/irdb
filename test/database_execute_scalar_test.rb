@@ -18,4 +18,12 @@ class DatabaseExecuteScalarTest < Test::Unit::TestCase
       assert @provider.connection.opened?
     end
   end
+  
+  def test_executes_command_as_scalar_and_returns_result
+    @provider.command.query_result[:scalar] = "result"
+    result = @db.execute_scalar("command text")
+    
+    assert_equal "command text", @provider.command.command_text
+    assert_equal "result", result
+  end
 end
