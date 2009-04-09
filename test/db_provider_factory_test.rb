@@ -12,20 +12,20 @@ class DbProviderFactoryTest < Test::Unit::TestCase
   def test_calls_dotnet_method
     expected = Object.new
     DbProviderFactories.factory = expected
-    provider = @provider_factory.get_provider("provider name")
+    provider = @provider_factory.create_provider("provider name")
     
     assert_equal "provider name", DbProviderFactories.provider_name
     assert_equal expected, provider
   end
   
   def test_adds_create_data_table_method
-    provider = @provider_factory.get_provider("provider name")
+    provider = @provider_factory.create_provider("provider name")
     
     assert provider.respond_to?(:create_data_table)
   end
   
   def test_create_data_table_returns_expected
-    provider = @provider_factory.get_provider("provider name")
+    provider = @provider_factory.create_provider("provider name")
     result = provider.create_data_table
     
     assert_equal FakeDataTable, result.class
