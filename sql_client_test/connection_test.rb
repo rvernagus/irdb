@@ -1,6 +1,5 @@
 require "test/unit"
 require "lib/irdb"
-require "System.Data"
 
 class SqlConnectionTest < Test::Unit::TestCase
   def setup
