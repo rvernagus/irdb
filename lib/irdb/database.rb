@@ -43,7 +43,8 @@ module IRDb
       param = @provider.create_parameter
       param.parameter_name = options[:name] || options[:parameter_name]
       param.value = options[:value]
-      param.db_type = options[:type] || options[:db_type]
+      param.db_type = options[:type] if options[:type]
+      param.db_type = options[:db_type] if options[:db_type]
       param.direction = options[:direction]
       cmd.parameters.add(param)
     end
