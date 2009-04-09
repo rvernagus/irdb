@@ -63,4 +63,10 @@ class DatabaseExecuteScalarTest < Test::Unit::TestCase
     
     assert_equal :initial_value, @cmd.parameters.first.direction
   end
+  
+  def test_can_set_size
+    @db.add_parameter(@cmd, :size => 1)
+    
+    assert_equal 1, @cmd.parameters.first.size
+  end
 end
