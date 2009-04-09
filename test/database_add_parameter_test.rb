@@ -69,4 +69,17 @@ class DatabaseExecuteScalarTest < Test::Unit::TestCase
     
     assert_equal 1, @cmd.parameters.first.size
   end
+  
+  def test_does_not_set_size_when_not_specified
+    @provider.parameter.size = :initial_value
+    @db.add_parameter(@cmd)
+    
+    assert_equal :initial_value, @cmd.parameters.first.size
+  end
+  
+  def test_can_set_source_column
+    @db.add_parameter(@cmd, :source_column => "column")
+    
+    assert_equal "column", @cmd.parameters.first.source_column
+  end
 end
