@@ -1,5 +1,6 @@
 require "test/unit"
 require "lib/irdb"
+require "System.Data"
 
 class SqlExecuteScalarTest < Test::Unit::TestCase
   def setup
@@ -10,9 +11,11 @@ class SqlExecuteScalarTest < Test::Unit::TestCase
     @db = IRDb::Database.new(provider, cstr)
   end
   
-  def test_returns_value
-    result = @db.execute_scalar("SELECT 'Death Knight'")
+  def test_specify_name_and_value
+    result = @db.execute_scalar("SELECT @param") do |cmd|
+      @db.add_parameter(cmd, :name => "param", :value => "value".to_string)
+    end
     
-    assert_equal "Death Knight", result
+    assert_equal "value", result
   end
 end
