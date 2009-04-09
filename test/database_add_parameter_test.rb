@@ -56,4 +56,11 @@ class DatabaseExecuteScalarTest < Test::Unit::TestCase
     
     assert_equal :expected, @cmd.parameters.first.direction
   end
+  
+  def test_does_not_set_db_type_when_not_specified
+    @provider.parameter.direction = :initial_value
+    @db.add_parameter(@cmd)
+    
+    assert_equal :initial_value, @cmd.parameters.first.direction
+  end
 end

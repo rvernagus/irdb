@@ -45,7 +45,7 @@ module IRDb
       param.value = options[:value]
       param.db_type = options[:type] if options[:type]
       param.db_type = options[:db_type] if options[:db_type]
-      param.direction = options[:direction]
+      param.direction = options[:direction] if options[:direction]
       cmd.parameters.add(param)
     end
     
