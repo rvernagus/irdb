@@ -61,9 +61,15 @@ module IRDb
     end
     
     def execute_table(command_text)
-      command(command_text) do |cmd|
-        yield cmd if block_given?
-        cmd.execute_table
+      connection do |c|
+        command(command_text) do |cmd|
+          table = @provider.create_data_table
+          adapter = @provider.create_data_adapter
+          yield cmd if block_given?
+          adapter.select_command = cmd
+          adapter.fill table
+          table
+        end
       end
     end
   end
