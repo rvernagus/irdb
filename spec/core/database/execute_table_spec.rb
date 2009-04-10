@@ -2,7 +2,6 @@ describe Database, "execute_table" do
   before :each do
     @provider = FakeProvider.new
     @db = Database.new(@provider, "connection string")
-    @cmd = @provider.command
   end
   
   it "should yield the expected command object" do
