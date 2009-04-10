@@ -1,4 +1,5 @@
 require "fake_data_table"
+
 # This class fakes out the DbProviderFactories .NET class for testing
 # It's also one of the few depencines that DbNet has on a .NET class
 module System

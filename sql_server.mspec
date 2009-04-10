@@ -1,6 +1,14 @@
+require "spec/sql_server/spec_helper"
+
 class MSpecScript
   # Invalid argument exception when using * patterns below
-  set :files, ["spec/sql_server/test_spec.rb"]
+  #  from ExpandPath
+  # That's why each file is individually listed
+  set :files, [
+    "spec/sql_server/command_spec.rb",
+    ]
   
-  set :target, "C:/rvernagus/dev/ironruby/bin/ir.exe"
+  # Have to specify full path here on Windows...mspec gives
+  #  an exception otherwise
+  set :target, "c:/rvernagus/dev/ironruby/bin/ir.exe"
 end
