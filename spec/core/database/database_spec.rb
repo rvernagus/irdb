@@ -1,5 +1,3 @@
-require "fake_provider"
-
 describe Database, "once initialized" do
   before :each do
     @provider = FakeProvider.new
