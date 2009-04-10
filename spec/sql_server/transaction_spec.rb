@@ -1,4 +1,4 @@
-describe Database, "commands on SQL Server" do
+describe Database, "transactions on SQL Server" do
   extend SqlServerHelper
   
   before :each do
