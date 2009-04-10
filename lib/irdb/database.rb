@@ -59,5 +59,12 @@ module IRDb
         end
       end
     end
+    
+    def execute_table(command_text)
+      command(command_text) do |cmd|
+        yield cmd if block_given?
+        cmd.execute_table
+      end
+    end
   end
 end
