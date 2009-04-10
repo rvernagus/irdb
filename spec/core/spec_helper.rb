@@ -6,5 +6,4 @@ $:.unshift helpers_path unless $:.include? helpers_path
 
 require "irdb"
 require "fake_provider"
-require "database_helper"
 include IRDb
