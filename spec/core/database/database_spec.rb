@@ -1,19 +1,27 @@
 describe Database, "once initialized" do
   before :each do
-    @provider = FakeProvider.new
-    @db = Database.new(@provider, "connection string")
-    @conn = @db.instance_variable_get("@conn")
+    @mock_conn = mock("Connection")
+    @provider = mock("Provider")
+    
+    @mock_provider.
+      should_receive(:create_connection).
+      and_return(@mock_conn)
+    @mock_conn.
+      should_receive(:connection_string=).
+      with("connection string")
+    
+    @db = Database.new(@mock_provider, "connection string")
+  end
+  
+  def connection
+    @db.instance_variable_get("@conn")
   end
   
   it "should hold a reference to the provider" do
-    @db.provider.should == @provider
+    @db.provider.should == @mock_provider
   end
   
   it "should store a connection" do
-    @conn.should == @provider.connection
-  end
-  
-  it "should set the connection_string of the connection" do
-    @conn.connection_string.should == "connection string"
+    connection.should == @mock_conn
   end
 end
