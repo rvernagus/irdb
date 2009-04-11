@@ -51,6 +51,15 @@ module IRDb
       cmd.parameters.add(param)
     end
     
+    def execute_non_query(command_text)
+      connection do |c|
+        command(command_text) do |cmd|
+          yield cmd if block_given?
+          cmd.execute_non_query
+        end
+      end
+    end
+    
     def execute_scalar(command_text)
       connection do |c|
         command(command_text) do |cmd|
