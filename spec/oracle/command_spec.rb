@@ -1,4 +1,4 @@
-describe Database, "commands on SQL Server" do
+describe Database, "commands on Oracle" do
   extend OracleHelper
   
   before :each do
