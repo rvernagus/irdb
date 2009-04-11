@@ -37,4 +37,11 @@ describe Database, "execute_table" do
     
     @provider.data_adapter.filled?.should be_true
   end
+  
+  it "should set the command text of the command" do
+    @provider.command.query_result[:table] = :result
+    result = @db.execute_table("command text")
+    
+    @provider.command.command_text.should == "command text"
+  end
 end

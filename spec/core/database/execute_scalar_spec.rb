@@ -20,11 +20,17 @@ describe Database, "execute_scalar" do
     end
   end
   
-  it "should execute command as scalar and return results" do
+  it "should set the command text of the command" do
     @provider.command.query_result[:scalar] = :result
     result = @db.execute_scalar("command text")
     
     @provider.command.command_text.should == "command text"
+  end
+  
+  it "should execute command as scalar and return result" do
+    @provider.command.query_result[:scalar] = :result
+    result = @db.execute_scalar("command text")
+    
     result.should == :result
   end
 end
