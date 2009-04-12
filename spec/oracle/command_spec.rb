@@ -5,11 +5,18 @@ describe Database, "commands on Oracle" do
     @db = get_database
   end
   
-  it "should return expected scalar value" do
+  it "should have expected connection" do
     @db.connection do |c|
       @db.command("SELECT 'Death Knight' FROM dual") do |cmd|
-        result = cmd.execute_scalar
-        result.should == "Death Knight"
+        cmd.connection.should == c
+      end
+    end
+  end
+
+  it "should have open connection" do
+    @db.connection do |c|
+      @db.command("SELECT 'Death Knight' FROM dual") do |cmd|
+        cmd.connection.state.should == System::Data::ConnectionState.open
       end
     end
   end
