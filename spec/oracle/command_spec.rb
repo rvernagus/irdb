@@ -21,7 +21,7 @@ describe Database, "commands on Oracle" do
     end
   end
 
-  it "should allow multiple commands within single command block" do
+  it "should allow multiple commands within single connection block" do
     @db.connection do |c|
       @db.command("SELECT 'Death Knight' FROM dual") do |cmd|
         result = cmd.execute_scalar
