@@ -81,5 +81,16 @@ module IRDb
         end
       end
     end
+    
+    def execute_reader(cmd)
+      begin
+        rdr = cmd.execute_reader
+        while rdr.read
+          yield rdr
+        end
+      ensure
+        rdr.dispose
+      end
+    end
   end
 end
