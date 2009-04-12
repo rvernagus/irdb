@@ -7,7 +7,7 @@ describe Database, "connections on Oracle" do
     @db = get_database
   end
   
-  it "should pass connection to block in Open stats" do
+  it "should pass connection to block in Open state" do
     @db.connection do |c|
       c.state.should == System::Data::ConnectionState.Open
     end
