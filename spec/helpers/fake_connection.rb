@@ -4,23 +4,26 @@ class FakeConnection
   attr_accessor :connection_string, :transaction
   
   def initialize
-    @opened = @closed = false
+    @opened = false
+    @closed = true
     @transaction = FakeTransaction.new
   end
   
   def open
     @opened = true
+    @closed = false
   end
   
   def close
     @closed = true
+    @opened = false
   end
   
   def begin_transaction
     @transaction
   end
   
-  def opened?
+  def open?
     @opened
   end
   

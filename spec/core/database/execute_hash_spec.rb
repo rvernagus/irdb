@@ -18,7 +18,7 @@ describe Database, "execute_hash" do
   
   it "should open connection for yield" do
     @db.execute_hash("command text") do |cmd|
-      @provider.connection.opened?.should be_true
+      @provider.connection.open?.should be_true
     end
   end
   
