@@ -56,4 +56,15 @@ describe Database, "execute_hash" do
     result.first["id"].should == 1
     result.first["class"].should == "Death Knight"
   end
+  
+  it "should return the expected number of hashes with expected keys and values when multiple records" do
+    @reader.data << {"id" => 1, "class" => "Death Knight"}
+    @reader.data << {"id" => 2, "class" => "Shaman"}
+    result = @db.execute_hash("command text")
+    
+    result.first["id"].should == 2
+    result.first["class"].should == "Shaman"
+    result.last["id"].should == 1
+    result.last["class"].should == "Death Knight"
+  end
 end
