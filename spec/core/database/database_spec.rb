@@ -13,7 +13,7 @@ describe Database, "once initialized" do
     @db = Database.new(@mock_provider, "connection string")
   end
   
-  def connection
+  def conn
     @db.instance_variable_get("@conn")
   end
   
@@ -22,6 +22,6 @@ describe Database, "once initialized" do
   end
   
   it "should store a connection" do
-    connection.should == @mock_conn
+    conn.should == @mock_conn
   end
 end
