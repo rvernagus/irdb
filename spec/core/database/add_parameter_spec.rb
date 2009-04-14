@@ -4,79 +4,84 @@ describe Database, "add_parameter" do
     @db = Database.new(@provider, "connection string")
     @cmd = @provider.command
   end
+  
+  def param
+    @cmd.parameters.length.should == 1
+    @cmd.parameters.first
+  end
 
-  it "should add the parameter to the command" do
+  it "should add a parameter to the command" do
     @db.add_parameter(@cmd)
     
     @cmd.parameters.length.should == 1
   end
   
   it "should set the parameter name to :name" do
-    @db.add_parameter(@cmd, :name => "name")
+    @db.add_parameter(@cmd, :name => :expected)
     
-    @cmd.parameters.first.parameter_name.should == "name"
+    param.parameter_name.should == :expected
   end
   
   it "should set the parameter name to :parameter_name" do
-    @db.add_parameter(@cmd, :parameter_name => "name")
+    @db.add_parameter(@cmd, :parameter_name => :expected)
     
-    @cmd.parameters.first.parameter_name.should == "name"
+    param.parameter_name.should == :expected
   end
   
   it "should set the parameter value to :value" do
     @db.add_parameter(@cmd, :value => :expected)
     
-    @cmd.parameters.first.value.should == :expected
+    param.value.should == :expected
   end
   
   it "should set db_type to :type" do
     @db.add_parameter(@cmd, :type => :expected)
     
-    @cmd.parameters.first.db_type.should == :expected
+    param.db_type.should == :expected
   end
   
   it "should set db_type to :db_type" do
     @db.add_parameter(@cmd, :db_type => :expected)
     
-    @cmd.parameters.first.db_type.should == :expected
+    param.db_type.should == :expected
   end
   
   it "should not set db_type when not specified" do
     @provider.parameter.db_type = :initial_value
     @db.add_parameter(@cmd)
     
-    @cmd.parameters.first.db_type.should == :initial_value
+    param.db_type.should == :initial_value
   end
   
   it "should set direction to :direction" do
     @db.add_parameter(@cmd, :direction => :expected)
     
-    @cmd.parameters.first.direction.should == :expected
+    param.direction.should == :expected
   end
   
   it "should not set direction when not specified" do
     @provider.parameter.direction = :initial_value
     @db.add_parameter(@cmd)
     
-    @cmd.parameters.first.direction.should == :initial_value
+    param.direction.should == :initial_value
   end
   
   it "should set size to :size" do
-    @db.add_parameter(@cmd, :size => 1)
+    @db.add_parameter(@cmd, :size => :expected)
     
-    @cmd.parameters.first.size.should == 1
+    param.size.should == :expected
   end
   
   it "should not set size when not specified" do
     @provider.parameter.size = :initial_value
     @db.add_parameter(@cmd)
     
-    @cmd.parameters.first.size.should == :initial_value
+    param.size.should == :initial_value
   end
   
   it "should set source_column to :source_column" do
     @db.add_parameter(@cmd, :source_column => :expected)
     
-    @cmd.parameters.first.source_column.should == :expected
+    param.source_column.should == :expected
   end
 end
