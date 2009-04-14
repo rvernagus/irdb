@@ -99,7 +99,11 @@ module IRDb
           yield cmd if block_given?
           results = []
           execute_reader(cmd) do |rdr|
-            results << 1
+            result = {}
+            0.upto(rdr.field_count - 1) do |i|
+              result[rdr.get_name(i)] = rdr.get_value(i)
+            end
+            results << result
           end
           results
         end

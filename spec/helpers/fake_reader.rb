@@ -13,6 +13,18 @@ class FakeReader
     !data.empty?
   end
   
+  def field_count
+    data.first.to_a.length
+  end
+  
+  def get_name(i)
+    data.first.to_a[i][0]
+  end
+  
+  def get_value(i)
+    data.first.to_a[i][1]
+  end
+  
   def dispose
     @disposed = true
   end
