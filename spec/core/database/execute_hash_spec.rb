@@ -78,4 +78,15 @@ describe Database, "execute_hash" do
     
     result.first["expected"].should == 1
   end
+  
+  it "should convert key to lowercase" do
+    key = Object.new
+    def key.to_s
+      "EXPECTED"
+    end
+    @reader.data << {key => 1}
+    result = @db.execute_hash("command text")
+    
+    result.first["expected"].should == 1
+  end
 end
