@@ -89,7 +89,7 @@ module IRDb
           yield rdr
         end
       ensure
-        rdr.dispose
+        rdr.dispose if rdr
       end
     end
     

@@ -1,4 +1,4 @@
-describe Database, "execute_scalar" do
+describe Database, "execute_reader" do
   before :each do
     @provider = FakeProvider.new
     @reader = mock("DbDataReader")
@@ -32,5 +32,22 @@ describe Database, "execute_scalar" do
     @reader.should_receive(:read).once.and_return(false)
     @reader.should_receive(:dispose).once
     @db.execute_reader(@provider.command) { }
+  end
+  
+  it "should not dispose of reader if command fails" do
+    cmd = @provider.command
+    def cmd.execute_reader
+      raise Exception
+    end
+    @reader.should_not_receive(:dispose)
+    lambda { @db.execute_reader(cmd) { }}.should raise_error(Exception)
+  end
+  
+  it "should not dispose of reader if nil" do
+    cmd = @provider.command
+    def cmd.execute_reader
+      raise Exception
+    end
+    lambda { @db.execute_reader(cmd) { }}.should_not raise_error(NoMethodError)
   end
 end
