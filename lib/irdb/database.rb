@@ -92,5 +92,18 @@ module IRDb
         rdr.dispose
       end
     end
+    
+    def execute_hash(command_text)
+      connection do |c|
+        command(command_text) do |cmd|
+          yield cmd if block_given?
+          results = []
+          execute_reader(cmd) do |rdr|
+            results << 1
+          end
+          results
+        end
+      end
+    end
   end
 end

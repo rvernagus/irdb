@@ -1,13 +1,16 @@
 class FakeReader
-  def initialize(max_reads)
-    @num_reads = 0
-    @max_reads = max_reads
+  attr_reader :data
+  
+  def initialize
+    @data = []
     @disposed = false
+    @read_init = true
   end
   
   def read
-    @num_reads += 1
-    @num_reads <= @max_reads
+    data.pop unless @read_init
+    @read_init = false
+    !data.empty?
   end
   
   def dispose
