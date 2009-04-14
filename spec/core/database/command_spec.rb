@@ -34,9 +34,9 @@ describe Database, "command" do
   
   it "should set the transaction property if there is one current" do
     @db.transaction do |t|
-        @db.command("command text") do |cmd|
-          cmd.transaction.should == t
-        end
+      @db.command("command text") do |cmd|
+        cmd.transaction.should == t
+      end
     end
   end
 end
