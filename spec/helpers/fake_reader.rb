@@ -4,25 +4,23 @@ class FakeReader
   def initialize
     @data = []
     @disposed = false
-    @read_init = true
   end
   
   def read
-    data.pop unless @read_init
-    @read_init = false
-    !data.empty?
+    @curr_rec = data.pop
+    !@curr_rec.nil?
   end
   
   def field_count
-    data.first.to_a.length
+    @curr_rec.to_a.length
   end
   
   def get_name(i)
-    data.first.to_a[i][0]
+    @curr_rec.to_a[i][0]
   end
   
   def get_value(i)
-    data.first.to_a[i][1]
+    @curr_rec.to_a[i][1]
   end
   
   def dispose
