@@ -67,4 +67,15 @@ describe Database, "execute_hash" do
     result.last["id"].should == 1
     result.last["class"].should == "Death Knight"
   end
+  
+  it "should convert key to Ruby string" do
+    key = Object.new
+    def key.to_s
+      "expected"
+    end
+    @reader.data << {key => 1}
+    result = @db.execute_hash("command text")
+    
+    result.first["expected"].should == 1
+  end
 end

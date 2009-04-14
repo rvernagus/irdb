@@ -101,7 +101,7 @@ module IRDb
           execute_reader(cmd) do |rdr|
             result = {}
             0.upto(rdr.field_count - 1) do |i|
-              result[rdr.get_name(i)] = rdr.get_value(i)
+              result[rdr.get_name(i).to_s] = rdr.get_value(i)
             end
             results << result
           end
