@@ -7,5 +7,10 @@ class MSpecScript
   set :files, Dir.glob("spec/oracle/**/*_spec.rb")
   
   # RUBY_EXE must be full path to ir.exe
-  set :target, ENV["RUBY_EXE"]
+  if ENV["RUBY_EXE"]
+    set :target, ENV["RUBY_EXE"]
+  else
+    puts "Must specify full path to ir.exe in ENV['RUBY_EXE']"
+    exit
+  end
 end
