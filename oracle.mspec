@@ -6,7 +6,6 @@ class MSpecScript
   # Thus the use of Dir.glob
   set :files, Dir.glob("spec/oracle/**/*_spec.rb")
   
-  # Have to specify full path here on Windows...mspec gives
-  #  an exception otherwise
-  set :target, "c:/rvernagus/dev/ironruby/bin/ir.exe"
+  # RUBY_EXE must be full path to ir.exe
+  set :target, ENV["RUBY_EXE"]
 end
