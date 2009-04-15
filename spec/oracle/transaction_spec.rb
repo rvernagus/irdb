@@ -31,11 +31,14 @@ describe Database, "transactions on Oracle" do
     lambda {
       @db.connection do |c|
         @db.transaction do |t|
-          @db.execute_non_query("DELETE FROM characters")
+          @db.command("DELETE FROM characters") do |cmd|
+            cmd.execute_scalar
+          end
           raise Exception
         end
       end
     }.should raise_error(Exception)
+    
     
     result = @db.execute_scalar("SELECT COUNT(*) FROM characters")
     result = System::Convert.to_int32(result)
