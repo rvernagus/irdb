@@ -1,0 +1,19 @@
+---
+:cstr: Data Source=.\sqlexpress;Initial Catalog=IRDbTest;Integrated Security=True;
+:provider: System.Data.SqlClient
+:setup:
+- DROP TABLE characters
+- |
+    CREATE TABLE [dbo].[characters](
+      [id] [int] IDENTITY(1,1) NOT NULL,
+      [class] [nchar](20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+      [level] [int] NOT NULL,
+      [slogan] [nchar](150) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+     CONSTRAINT [PK_characters] PRIMARY KEY CLUSTERED 
+    (
+      [id] ASC
+    )WITH (PAD_INDEX  = OFF, IGNORE_DUP_KEY = OFF) ON [PRIMARY]
+    ) ON [PRIMARY]
+
+- INSERT INTO [dbo].[characters] (class,level,slogan) VALUES('Death Knight',80,null)
+- INSERT INTO [dbo].[characters] (class,level,slogan) VALUES('Shaman',68,'ZAPP!')
