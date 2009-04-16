@@ -30,6 +30,11 @@ module IRDb
       @statebag[:transaction] = t
     end
     
+    def end_transaction
+      @statebag.delete :transaction
+      self
+    end
+    
     def connection
       begin
         conn = begin_connection
