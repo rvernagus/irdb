@@ -4,10 +4,12 @@ class FakeTransaction
   end
   
   def commit
+    raise "cannot commit same transaction twice" if committed?
     @committed = true
   end
   
   def rollback
+    raise "cannot rollback same transaction twice" if rolled_back?
     @rolled_back = true
   end
   

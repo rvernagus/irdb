@@ -4,7 +4,7 @@ describe Database, "execute_scalar" do
     @db = Database.new(@provider, "connection string")
   end
   
-  it "should yield the expected command object" do
+  it "should return the expected command object" do
     was_yielded = false
     @db.execute_scalar("command text") do |cmd|
       was_yielded = true

@@ -62,7 +62,7 @@ module IRDb
       cmd.connection = @conn
       cmd.transaction = @state.transaction if @state.in_transaction?
       cmd.command_text = commmand_text
-      yield cmd
+      cmd
     end
     
     def add_parameter(cmd, options={})
@@ -79,32 +79,28 @@ module IRDb
     
     def execute_non_query(command_text)
       connection do |c|
-        command(command_text) do |cmd|
-          yield cmd if block_given?
-          cmd.execute_non_query
-        end
+        cmd = command(command_text)
+        yield cmd if block_given?
+        cmd.execute_non_query
       end
     end
     
     def execute_scalar(command_text)
-      connection do |c|
-        command(command_text) do |cmd|
-          yield cmd if block_given?
-          cmd.execute_scalar
-        end
-      end
+      begin_connection
+      cmd = command(command_text)
+      yield cmd if block_given?
+      cmd.execute_scalar
     end
     
     def execute_table(command_text)
       connection do |c|
-        command(command_text) do |cmd|
-          table = @provider.create_data_table
-          adapter = @provider.create_data_adapter
-          yield cmd if block_given?
-          adapter.select_command = cmd
-          adapter.fill table
-          table
-        end
+        cmd = command(command_text)
+        table = @provider.create_data_table
+        adapter = @provider.create_data_adapter
+        yield cmd if block_given?
+        adapter.select_command = cmd
+        adapter.fill table
+        table
       end
     end
     
@@ -121,18 +117,17 @@ module IRDb
     
     def execute_hash(command_text)
       connection do |c|
-        command(command_text) do |cmd|
-          yield cmd if block_given?
-          results = []
-          execute_reader(cmd) do |rdr|
-            result = {}
-            0.upto(rdr.field_count - 1) do |i|
-              result[rdr.get_name(i).to_s.downcase] = rdr.get_value(i)
-            end
-            results << result
+        cmd = command(command_text)
+        yield cmd if block_given?
+        results = []
+        execute_reader(cmd) do |rdr|
+          result = {}
+          0.upto(rdr.field_count - 1) do |i|
+            result[rdr.get_name(i).to_s.downcase] = rdr.get_value(i)
           end
-          results
+          results << result
         end
+        results
       end
     end
   end

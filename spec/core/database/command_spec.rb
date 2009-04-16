@@ -4,39 +4,30 @@ describe Database, "command" do
     @db = Database.new(@provider, "connection string")
   end
   
-  it "should yield the expected command object" do
-    was_yielded = false
-    @db.command("command text") do |cmd|
-      was_yielded = true
-      cmd.should == @provider.command
-    end
-    
-    was_yielded.should be_true
+  it "should return the expected command object" do
+    result = @db.command("command text")
+    result.should == @provider.command
   end
   
   it "should set the connection property of the command" do
-    @db.command("command text") do |cmd|
-      cmd.connection.should == @provider.connection
-    end
+    result = @db.command("command text")
+    result.connection.should == @provider.connection
   end
   
   it "should set the command_text property of the command" do
-    @db.command("command text") do |cmd|
-      cmd.command_text.should == "command text"
-    end
+    result = @db.command("command text")
+    result.command_text.should == "command text"
   end
   
   it "should not set the transaction property if there is not one current" do
-    @db.command("command text") do |cmd|
-      cmd.transaction.should be_nil
-    end
+    result = @db.command("command text")
+    result.transaction.should be_nil
   end
   
   it "should set the transaction property if there is one current" do
     @db.transaction do |t|
-      @db.command("command text") do |cmd|
-        cmd.transaction.should == t
-      end
+      result = @db.command("command text")
+      result.transaction.should == t
     end
   end
 end

@@ -52,4 +52,10 @@ describe Database, "transaction" do
     @transaction.committed?.should be_false
     @transaction.rolled_back?.should be_true
   end
+  
+  it "should open a connection for the block" do
+    @db.transaction do |t|
+      @db.provider.connection.open?.should be_true
+    end
+  end
 end

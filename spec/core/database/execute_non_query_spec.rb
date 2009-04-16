@@ -1,4 +1,4 @@
-describe Database, "execute_scalar" do
+describe Database, "execute_non_query" do
   before :each do
     @provider = FakeProvider.new
     @db = Database.new(@provider, "connection string")
