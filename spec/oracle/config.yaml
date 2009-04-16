@@ -1,5 +1,5 @@
 ---
-:cstr: server=xe;user=irdb;password=irdb;
+:cstr: server=localhost:1521/xe;user=irdb;password=irdb;
 :provider: System.Data.OracleClient
 :setup: 
 - DROP SEQUENCE "CHARACTERS_SEQ"
