@@ -6,7 +6,7 @@ module IRDb
       @provider = provider
       @conn = @provider.create_connection
       conn.connection_string = connection_string
-      @transaction = nil
+      @trans = nil
     end
     
     def begin_connection
@@ -64,7 +64,7 @@ module IRDb
     end
     
     def add_parameter(cmd, options={})
-      param = @provider.create_parameter
+      param = provider.create_parameter
       param.parameter_name = options[:name] || options[:parameter_name]
       param.value = options[:value]
       param.db_type = options[:type] if options[:type]
@@ -92,8 +92,8 @@ module IRDb
     def execute_table(command_text)
       begin_connection
       cmd = command(command_text)
-      table = @provider.create_data_table
-      adapter = @provider.create_data_adapter
+      table = provider.create_data_table
+      adapter = provider.create_data_adapter
       yield cmd if block_given?
       adapter.select_command = cmd
       adapter.fill table
@@ -134,7 +134,7 @@ module IRDb
     end
     
     def in_transaction?
-      !@trans.nil?
+      !trans.nil?
     end
   end
 end
