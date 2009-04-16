@@ -45,7 +45,7 @@ module IRDb
     end
     
     def transaction
-      t = @conn.begin_transaction
+      t = begin_transaction
       @current_transaction = t
       begin
         yield t if block_given?
@@ -54,6 +54,7 @@ module IRDb
         t.rollback
         raise
       ensure
+        end_transaction
         @current_transaction = nil
       end
     end
@@ -135,6 +136,12 @@ module IRDb
           results
         end
       end
+    end
+  end
+  
+  class DatabaseState
+    def connected?
+      false
     end
   end
 end
