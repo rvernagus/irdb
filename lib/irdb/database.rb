@@ -23,6 +23,13 @@ module IRDb
       self
     end
     
+    def begin_transaction
+      return @statebag[:transaction] if @statebag.include?(:transaction)
+      conn = begin_connection
+      t = conn.begin_transaction
+      @statebag[:transaction] = t
+    end
+    
     def connection
       begin
         conn = begin_connection
