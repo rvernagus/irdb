@@ -10,6 +10,7 @@ module IRDb
     end
     
     def begin_connection
+      return @statebag[:connection] if @statebag[:connection]
       @conn.open
       @statebag[:connection] = @conn
     end
