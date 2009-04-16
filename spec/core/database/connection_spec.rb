@@ -20,7 +20,7 @@ describe Database, "connection" do
     def conn.open
       raise Exception
     end
-    
+        
     lambda { @db.connection }.should raise_error(Exception) 
     
     conn.closed?.should be_true

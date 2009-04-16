@@ -25,10 +25,10 @@ module IRDb
     
     def connection
       begin
-        @conn.open
-        yield @conn if block_given?
+        conn = begin_connection
+        yield conn if block_given?
       ensure
-        @conn.close
+        end_connection
       end
     end
     
