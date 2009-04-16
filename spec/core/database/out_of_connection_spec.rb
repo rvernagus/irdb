@@ -7,15 +7,15 @@ describe Database, "after exiting connected state" do
     @statebag = @db.instance_variable_get("@statebag")
   end
   
-  it "should remove the connection from the statebag" do
+  it "should have removed the connection from the statebag" do
     @statebag[:connection].should be_nil
   end
   
-  it "should close the connection" do
+  it "should have closed the connection" do
     @provider.connection.closed?.should be_true
   end
   
-  it "should return self" do
+  it "should have returned self" do
     @result.should == @db
   end
   
