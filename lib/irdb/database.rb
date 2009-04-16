@@ -6,32 +6,32 @@ module IRDb
       @provider = provider
       @conn = @provider.create_connection
       @conn.connection_string = connection_string
-      @statebag = {}
+      @state = DatabaseState.new
     end
     
     def begin_connection
-      return @statebag[:connection] if @statebag.include?(:connection)
+      return @state.connection if @state.connected?
       @conn.open
-      @statebag[:connection] = @conn
+      @state.connection = @conn
     end
     
     def end_connection
-      return self unless @statebag.include?(:connection)
-      conn = @statebag[:connection]
+      return self unless @state.connected?
+      conn = @state.connection
       conn.close
-      @statebag.delete :connection
+      @state.connection = nil
       self
     end
     
     def begin_transaction
-      return @statebag[:transaction] if @statebag.include?(:transaction)
+      return @state.transaction if @state.in_transaction?
       conn = begin_connection
       t = conn.begin_transaction
-      @statebag[:transaction] = t
+      @state.transaction = t
     end
     
     def end_transaction
-      @statebag.delete :transaction
+      @state.transaction = nil
       self
     end
     
@@ -46,7 +46,6 @@ module IRDb
     
     def transaction
       t = begin_transaction
-      @current_transaction = t
       begin
         yield t if block_given?
         t.commit
@@ -55,14 +54,13 @@ module IRDb
         raise
       ensure
         end_transaction
-        @current_transaction = nil
       end
     end
     
     def command(commmand_text)
       cmd = provider.create_command
       cmd.connection = @conn
-      cmd.transaction = @current_transaction
+      cmd.transaction = @state.transaction if @state.in_transaction?
       cmd.command_text = commmand_text
       yield cmd
     end
@@ -140,8 +138,18 @@ module IRDb
   end
   
   class DatabaseState
+    attr_accessor :connection, :transaction
+    
+    def initialize
+      @connection = @transaction = nil
+    end
+    
     def connected?
-      false
+      !@connection.nil?
+    end
+    
+    def in_transaction?
+      !@transaction.nil?
     end
   end
 end
