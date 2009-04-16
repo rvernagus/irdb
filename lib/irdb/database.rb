@@ -14,6 +14,13 @@ module IRDb
       @statebag[:connection] = @conn
     end
     
+    def end_connection
+      conn = @statebag[:connection]
+      conn.close
+      @statebag.delete :connection
+      self
+    end
+    
     def connection
       begin
         @conn.open
