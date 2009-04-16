@@ -6,6 +6,12 @@ module IRDb
       @provider = provider
       @conn = @provider.create_connection
       @conn.connection_string = connection_string
+      @statebag = {}
+    end
+    
+    def begin_connection
+      @conn.open
+      @statebag[:connection] = @conn
     end
     
     def connection
