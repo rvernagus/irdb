@@ -18,4 +18,9 @@ describe Database, "after exiting connected state" do
   it "should return self" do
     @result.should == @db
   end
+  
+  it "should allow subsequent end messages" do
+    result = @db.end_connection
+    result.should == @db
+  end
 end

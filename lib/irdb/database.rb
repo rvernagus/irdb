@@ -10,12 +10,13 @@ module IRDb
     end
     
     def begin_connection
-      return @statebag[:connection] if @statebag[:connection]
+      return @statebag[:connection] if @statebag.include?(:connection)
       @conn.open
       @statebag[:connection] = @conn
     end
     
     def end_connection
+      return self unless @statebag.include?(:connection)
       conn = @statebag[:connection]
       conn.close
       @statebag.delete :connection
