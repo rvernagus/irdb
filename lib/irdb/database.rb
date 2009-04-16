@@ -5,39 +5,37 @@ module IRDb
     def initialize(provider, connection_string)
       @provider = provider
       @conn = @provider.create_connection
-      @conn.connection_string = connection_string
-      @state = DatabaseState.new
+      conn.connection_string = connection_string
+      @transaction = nil
     end
     
     def begin_connection
-      return @state.connection if @state.connected?
-      @conn.open
-      @state.connection = @conn
+      return conn if connected?
+      conn.open
+      conn
     end
     
     def end_connection
-      return self unless @state.connected?
-      conn = @state.connection
+      return self unless connected?
       conn.close
-      @state.connection = nil
       self
     end
     
     def begin_transaction
-      return @state.transaction if @state.in_transaction?
-      conn = begin_connection
+      return trans if in_transaction?
+      begin_connection
       t = conn.begin_transaction
-      @state.transaction = t
+      self.trans = t
     end
     
     def end_transaction
-      @state.transaction = nil
+      self.trans = nil
       self
     end
     
     def connection
       begin
-        conn = begin_connection
+        begin_connection
         yield conn if block_given?
       ensure
         end_connection
@@ -59,8 +57,8 @@ module IRDb
     
     def command(commmand_text)
       cmd = provider.create_command
-      cmd.connection = @conn
-      cmd.transaction = @state.transaction if @state.in_transaction?
+      cmd.connection = conn
+      cmd.transaction = trans if in_transaction?
       cmd.command_text = commmand_text
       cmd
     end
@@ -127,21 +125,16 @@ module IRDb
       end
       results
     end
-  end
-  
-  class DatabaseState
-    attr_accessor :connection, :transaction
     
-    def initialize
-      @connection = @transaction = nil
-    end
+    private
+    attr_accessor :conn, :trans
     
     def connected?
-      !@connection.nil?
+      conn.state == System::Data::ConnectionState.open
     end
     
     def in_transaction?
-      !@transaction.nil?
+      !@trans.nil?
     end
   end
 end

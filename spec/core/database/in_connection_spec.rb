@@ -3,15 +3,15 @@ describe Database, "in connected state" do
     @provider = FakeProvider.new
     @db = Database.new(@provider, "connection string")
     @result = @db.begin_connection
-    @state = @db.instance_variable_get("@state")
+    @connection = @db.instance_variable_get("@conn")
   end
   
   it "should have a connection in state" do
-    @state.connection.should == @provider.connection
+    @connection.should == @provider.connection
   end
   
   it "should have an open connection" do
-    @state.connection.open?.should be_true
+    @connection.open?.should be_true
   end
   
   it "should have returned the connection" do
@@ -19,9 +19,9 @@ describe Database, "in connected state" do
   end
   
   it "should not set the connection in state more than once" do
-    @state.connection = :expected
+    @connection = :expected
     @db.begin_connection
-    @state.connection.should == :expected
+    @connection.should == :expected
   end
   
   it "should just return connection if begin_connection is called" do

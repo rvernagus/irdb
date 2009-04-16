@@ -1,22 +1,19 @@
 require "fake_transaction"
 
 class FakeConnection
-  attr_accessor :connection_string, :transaction
+  attr_accessor :connection_string, :transaction, :state
   
   def initialize
-    @opened = false
-    @closed = true
+    @state = System::Data::ConnectionState.closed
     @transaction = FakeTransaction.new
   end
   
   def open
-    @opened = true
-    @closed = false
+    @state = System::Data::ConnectionState.open
   end
   
   def close
-    @closed = true
-    @opened = false
+    @state = System::Data::ConnectionState.closed
   end
   
   def begin_transaction
@@ -24,11 +21,11 @@ class FakeConnection
   end
   
   def open?
-    @opened
+    @state == System::Data::ConnectionState.open
   end
   
   def closed?
-    @closed
+    @state == System::Data::ConnectionState.closed
   end
   
   def transaction_started?

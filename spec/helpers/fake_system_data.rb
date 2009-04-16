@@ -4,6 +4,18 @@ require "fake_data_table"
 # It's also one of the few depencines that DbNet has on a .NET class
 module System
   module Data
+    DataTable = FakeDataTable
+    
+    class ConnectionState
+      def self.open
+        "open"
+      end
+      
+      def self.closed
+        "closed"
+      end
+    end
+    
     module Common
       class DbProviderFactories
         class << self
@@ -16,7 +28,5 @@ module System
         end
       end
     end
-    
-    DataTable = FakeDataTable
   end
 end

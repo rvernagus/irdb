@@ -4,11 +4,7 @@ describe Database, "after exiting connected state" do
     @db = Database.new(@provider, "connection string")
     @db.begin_connection
     @result = @db.end_connection
-    @state = @db.instance_variable_get("@state")
-  end
-  
-  it "should have removed the connection from the state" do
-    @state.connection.should be_nil
+    @connection = @db.instance_variable_get("@connection")
   end
   
   it "should have closed the connection" do

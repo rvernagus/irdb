@@ -6,7 +6,7 @@ describe Database, "transaction" do
   end
   
   def current_transaction
-    @db.instance_variable_get("@state").transaction
+    @db.instance_variable_get("@trans")
   end
   
   it "should yield the expected object" do
