@@ -6,15 +6,15 @@ describe Database, "in connected state" do
     @statebag = @db.instance_variable_get("@statebag")
   end
   
-  it "should add the connection to the statebag" do
+  it "should have a connection in the statebag" do
     @statebag[:connection].should == @provider.connection
   end
   
-  it "should open the connection" do
+  it "should have an open connection" do
     @statebag[:connection].open?.should be_true
   end
   
-  it "should return the connection" do
+  it "should have returned the connection" do
     @result.should == @provider.connection
   end
   
