@@ -69,10 +69,7 @@ describe Database, "execute_hash" do
   end
   
   it "should convert key to lowercase" do
-    key = Object.new
-    def key.to_s
-      "EXPECTED"
-    end
+    key = "EXPECTED"
     @reader.data << {key => 1}
     result = @db.execute_hash("command text")
     
