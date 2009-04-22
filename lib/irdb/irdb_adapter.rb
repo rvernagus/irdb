@@ -3,9 +3,11 @@ require 'active_record/connection_adapters/abstract_adapter'
 module ActiveRecord
   class Base
     def self.irdb_connection(config)
-      provider = config[:provider] || config[:provider_name]
-      cstr     = config[:cstr] || config[:connection_string]
+      provider_name = config[:provider] || config[:provider_name]
+      cstr          = config[:cstr] || config[:connection_string]
       
+      provider_factory = IRDb::DbProviderFactory.new
+      provider = provider_factory.create_provider(provider_name)
       db = IRDb::Database.new(provider, cstr)
       ConnectionAdapters::IrdbAdapter.new(db, logger, config)
     end
