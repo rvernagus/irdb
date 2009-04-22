@@ -126,12 +126,12 @@ module IRDb
       results
     end
     
-    private
-    attr_accessor :conn, :trans
-    
     def connected?
       conn.state == System::Data::ConnectionState.open
     end
+    
+    private
+    attr_accessor :conn, :trans
     
     def in_transaction?
       !trans.nil?
