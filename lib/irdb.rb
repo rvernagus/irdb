@@ -9,3 +9,7 @@ rescue LoadError
   # Assume not running IronRuby
   # Only .NET dependency is in ProviderFactory
 end
+
+module IRDb
+  VERSION = '0.1.0'
+end

@@ -1,0 +1,7 @@
+History.txt
+Manifest.txt
+README.txt
+Rakefile
+lib/irdb.rb
+lib/irdb/database.rb
+lib/irdb/db_provider_factory.rb
