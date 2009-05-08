@@ -16,16 +16,18 @@ IRDb is written in 100% Ruby code.
 
 == SYNOPSIS:
 
-To run the core specs, use:
-  mspec/bin/mspec -B core.mspec
-or:
-  ruby mspec/bin/mspec -B core.mspec
+Core specs:
+  rake spec:core
+  
+Specs in IronRuby:
+  rake spec:core_ir
+  rake spec:sql_server
+  rake spec:oracle
 
-To run other specs, use:
-  mspec/bin/mspec -B <spec name>.mspec
-or:
-  ruby mspec/bin/mspec -B <spec name>.mspec
-
+Or run at the command line:
+  ir mspec/bin/mspec -B spec/core_ir.mspec
+  ir mspec/bin/mspec -B spec/oracle.mspec
+  ir mspec/bin/mspec -B spec/sql_server.mspec
 
 == REQUIREMENTS:
 
