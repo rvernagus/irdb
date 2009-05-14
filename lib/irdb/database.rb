@@ -137,14 +137,14 @@ module IRDb
     end
     
     private
-    attr_accessor :conn, :trans
-    
-    def connected?
-      conn.state == System::Data::ConnectionState.open
-    end
-    
-    def in_transaction?
-      !trans.nil?
-    end
+      attr_accessor :conn, :trans
+      
+      def connected?
+        conn.state == System::Data::ConnectionState.open
+      end
+      
+      def in_transaction?
+        !trans.nil?
+      end
   end
 end
