@@ -67,10 +67,10 @@ module IRDb
       param = provider.create_parameter
       param.parameter_name = options[:name] || options[:parameter_name]
       param.value = options[:value]
-      param.db_type = options[:type] if options[:type]
-      param.db_type = options[:db_type] if options[:db_type]
-      param.direction = options[:direction] if options[:direction]
-      param.size = options[:size] if options[:size]
+      param.db_type ||= options[:type]
+      param.db_type ||= options[:db_type]
+      param.direction ||= options[:direction]
+      param.size ||= options[:size]
       param.source_column = options[:source_column]
       cmd.parameters.add(param)
     end
@@ -78,14 +78,18 @@ module IRDb
     def execute_non_query(command_text)
       begin_connection
       cmd = command(command_text)
+      
       yield cmd if block_given?
+      
       cmd.execute_non_query
     end
     
     def execute_scalar(command_text)
       begin_connection
       cmd = command(command_text)
+      
       yield cmd if block_given?
+      
       cmd.execute_scalar
     end
     
@@ -94,7 +98,9 @@ module IRDb
       cmd = command(command_text)
       table = provider.create_data_table
       adapter = provider.create_data_adapter
+      
       yield cmd if block_given?
+      
       adapter.select_command = cmd
       adapter.fill table
       table
@@ -104,7 +110,9 @@ module IRDb
       begin
         rdr = cmd.execute_reader
         while rdr.read
+          
           yield rdr
+          
         end
       ensure
         rdr.dispose if rdr
@@ -114,7 +122,9 @@ module IRDb
     def execute_hash(command_text)
       begin_connection
       cmd = command(command_text)
+      
       yield cmd if block_given?
+      
       results = []
       execute_reader(cmd) do |rdr|
         result = {}
