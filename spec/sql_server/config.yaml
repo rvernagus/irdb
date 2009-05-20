@@ -6,7 +6,7 @@
 - |
     CREATE TABLE [dbo].[characters](
       [id] [int] IDENTITY(1,1) NOT NULL,
-      [class] [nchar](20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+      [character_class] [nchar](20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
       [level] [int] NOT NULL,
       [slogan] [nchar](150) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
      CONSTRAINT [PK_characters] PRIMARY KEY CLUSTERED 
@@ -15,5 +15,5 @@
     )WITH (PAD_INDEX  = OFF, IGNORE_DUP_KEY = OFF) ON [PRIMARY]
     ) ON [PRIMARY]
 
-- INSERT INTO [dbo].[characters] (class,level,slogan) VALUES('Death Knight',80,null)
-- INSERT INTO [dbo].[characters] (class,level,slogan) VALUES('Shaman',68,'ZAPP!')
+- INSERT INTO [dbo].[characters] (character_class,level,slogan) VALUES('Death Knight',80,null)
+- INSERT INTO [dbo].[characters] (character_class,level,slogan) VALUES('Shaman',68,'ZAPP!')
