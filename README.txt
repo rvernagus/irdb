@@ -34,7 +34,7 @@ Or run at the command line:
 * IronRuby
 * hoe
 
-== INSTALL:
+== INSTALL (not yet available):
 
 * igem install irdb
 
