@@ -11,7 +11,7 @@ class FakeConnection
   def open
     @state = System::Data::ConnectionState.open
   end
-  
+
   def close
     @state = System::Data::ConnectionState.closed
   end

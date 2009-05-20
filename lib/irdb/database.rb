@@ -136,6 +136,22 @@ module IRDb
       results
     end
     
+    def columns(table_name)
+      connection do |conn|
+        schema = conn.get_schema("Columns")
+        schema.rows.map do |row|
+          if row["TABLE_NAME"].to_s =~ /#{table_name}/i
+            {
+              :name      => row["COLUMN_NAME"].to_s,
+              :default   => row["COLUMN_DEFAULT"].class == System::DBNull ? nil : row["COLUMN_DEFAULT"],
+              :type      => row["DATA_TYPE"].to_s,
+              :nullable? => row["IS_NULLABLE"].to_s == "YES"
+            }
+          end
+        end.compact
+      end
+    end
+    
     private
       attr_accessor :conn, :trans
       
