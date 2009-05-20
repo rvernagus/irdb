@@ -15,7 +15,7 @@ describe Database, "execute_hash on SQL Server" do
     result = @db.execute_hash("SELECT * FROM characters ORDER BY id")
     
     result.length.should == 2
-    result[0]["class"].rstrip.should == "Death Knight"
-    result[1]["class"].rstrip.should == "Shaman"
+    result[0]["character_class"].rstrip.should == "Death Knight"
+    result[1]["character_class"].rstrip.should == "Shaman"
   end
 end
