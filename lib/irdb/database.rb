@@ -3,8 +3,8 @@ module IRDb
     attr_reader :provider
     
     def initialize(provider, connection_string)
-      @provider = provider
-      @conn = @provider.create_connection
+      @provider              = provider
+      @conn                  = @provider.create_connection
       conn.connection_string = connection_string
       @trans = nil
     end
@@ -56,22 +56,22 @@ module IRDb
     end
     
     def command(commmand_text)
-      cmd = provider.create_command
-      cmd.connection = conn
-      cmd.transaction = trans if in_transaction?
+      cmd              = provider.create_command
+      cmd.connection   = conn
+      cmd.transaction  = trans if in_transaction?
       cmd.command_text = commmand_text
       cmd
     end
     
     def add_parameter(cmd, options={})
-      param = provider.create_parameter
+      param                = provider.create_parameter
       param.parameter_name = options[:name] || options[:parameter_name]
-      param.value = options[:value]
-      param.db_type ||= options[:type]
-      param.db_type ||= options[:db_type]
-      param.direction ||= options[:direction]
-      param.size ||= options[:size]
-      param.source_column = options[:source_column]
+      param.value          = options[:value]
+      param.db_type      ||= options[:type]
+      param.db_type      ||= options[:db_type]
+      param.direction    ||= options[:direction]
+      param.size         ||= options[:size]
+      param.source_column  = options[:source_column]
       cmd.parameters.add(param)
     end
     
@@ -95,8 +95,8 @@ module IRDb
     
     def execute_table(command_text)
       begin_connection
-      cmd = command(command_text)
-      table = provider.create_data_table
+      cmd     = command(command_text)
+      table   = provider.create_data_table
       adapter = provider.create_data_adapter
       
       yield cmd if block_given?
@@ -137,8 +137,8 @@ module IRDb
     end
     
     def columns(table_name)
-      connection do |conn|
-        schema = conn.get_schema("Columns")
+      connection do |c|
+        schema = c.get_schema("Columns")
         schema.rows.map do |row|
           if row["TABLE_NAME"].to_s =~ /#{table_name}/i
             {
