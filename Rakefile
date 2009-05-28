@@ -3,7 +3,7 @@ require "lib/irdb"
 
 task :default => "spec:core"
 
-Hoe.new("IRDb", IRDb::VERSION) do |p|
+Hoe.new("irdb", IRDb::VERSION) do |p|
   p.developer("Ray Vernagus", "r.vernagus@gmail.com")
 end
 
