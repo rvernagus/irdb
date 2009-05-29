@@ -6,7 +6,8 @@ class MSpecScript
   # Invalid argument exception when using * patterns below
   #  from ExpandPath
   # Thus the use of Dir.glob
-  set :files, Dir.glob("spec/core/**/*_spec.rb")
+  #set :files, Dir.glob("spec/core/**/*_spec.rb")
+  set :files, ["spec/core/database/add_parameter_spec.rb"]
   
   # RUBY_EXE must be full path to ir.exe
   if ENV["RUBY_EXE"]
