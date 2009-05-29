@@ -9,11 +9,7 @@ end
 
 namespace :spec do |n|
   task :core do |t|
-    puts `ruby mspec/bin/mspec -B spec/core.mspec`
-  end
-  
-  task :core_ir do |t|
-    puts `ir mspec/bin/mspec -B spec/core_ir.mspec`
+    puts `ir mspec/bin/mspec -B spec/core.mspec`
   end
   
   task :oracle do |t|

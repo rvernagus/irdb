@@ -3,5 +3,16 @@ require "spec/core/spec_helper"
 # By default, core specs are run with MRI Ruby
 # This will continue until IronRuby fixes ExpandPath bugs (and gets faster)
 class MSpecScript
-  set :files, ["spec/core/**/*_spec.rb"]
+  # Invalid argument exception when using * patterns below
+  #  from ExpandPath
+  # Thus the use of Dir.glob
+  set :files, Dir.glob("spec/core/**/*_spec.rb")
+  
+  # RUBY_EXE must be full path to ir.exe
+  if ENV["RUBY_EXE"]
+    set :target, ENV["RUBY_EXE"]
+  else
+    puts "Must specify full path to ir.exe in ENV['RUBY_EXE']"
+    exit
+  end
 end
