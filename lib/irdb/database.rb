@@ -134,6 +134,8 @@ module IRDb
       results
     end
     
+    # Each provider returns its own version of the schema
+    # This method returns a simple hash of the table that's given
     def columns(table_name)
       connection do |c|
         schema = c.get_schema("Columns")

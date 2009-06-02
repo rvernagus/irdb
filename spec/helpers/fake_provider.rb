@@ -1,4 +1,5 @@
 require "fake_db_command"
+require "fake_db_connection"
 require "fake_db_parameter"
 
 class FakeProvider
@@ -6,7 +7,7 @@ class FakeProvider
                 :data_adapter, :data_table
   
   def initialize
-    @connection   = mock("DbConnection")
+    @connection   = FakeDbConnection.new
     @command      = FakeDbCommand.new
     @parameter    = FakeDbParameter.new
     @data_adapter = mock("DbDataAdapter")

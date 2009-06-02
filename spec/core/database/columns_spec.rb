@@ -1,4 +1,4 @@
-#class System::DBNull; end
+require "fake_data_table"
 
 class CLRString
   def initialize(value)
@@ -13,19 +13,7 @@ end
 describe Database, "columns" do
   before :each do
     provider = FakeProvider.new
-    
-    connection = mock("Connection")
-    connection.
-      should_receive(:connection_string=).
-      with("connection string")
-    connection.
-      should_receive(:state).
-      and_return(System::Data::ConnectionState.closed, System::Data::ConnectionState.open)
-    connection.
-      should_receive(:open)
-    connection.
-      should_receive(:close)
-    connection.
+    provider.connection._mock.
       should_receive(:get_schema).
       with("Columns").
       and_return(FakeDataTable.new(
@@ -39,7 +27,7 @@ describe Database, "columns" do
         {
           "TABLE_NAME"     => CLRString.new("table1"),
           "COLUMN_NAME"    => CLRString.new("col2"),
-          "COLUMN_DEFAULT" => System::DBNull.new,
+          "COLUMN_DEFAULT" => System::DBNull.value,
           "DATA_TYPE"      => CLRString.new("type2"),
           "IS_NULLABLE"    => CLRString.new("NO")
         },
@@ -51,8 +39,7 @@ describe Database, "columns" do
           "IS_NULLABLE"    => CLRString.new("YES")
         }
       ))
-      
-    provider.connection = connection
+
     @db = Database.new(provider, "connection string")
   end
   
@@ -67,28 +54,13 @@ describe Database, "columns" do
   it "should allow for case-insentivity in table name" do
     result("TABLE1").length.should == 2
   end
-
-  it "should convert COLUMN_NAME to String" do
-    result("table1").first[:name].should == "col1"
-  end
-
-  it "should set COLUMN_DEFAULT to expected" do
-    result("table1").first[:default].should == "default1"
-  end
-
-  it "should convert COLUMN_DEFAULT to nil if DBNull" do
-    result("table1").last[:default].should be_nil
-  end
-
-  it "should convert DATA_TYPE to string" do
-    result("table1").first[:type].should == "type1"
-  end
-
-  it "should convert IS_NULLABLE to string and set to true if 'YES'" do
-    result("table1").first[:nullable?].should be_true
-  end
-
-  it "should convert IS_NULLABLE to string and set to false if 'NO'" do
-    result("table1").last[:nullable?].should be_false
+  
+  it "should return a hash of the columns as given by the provider" do
+    cols = result("table1").first
+    cols["TABLE_NAME"].to_s.should == "table1"
+    cols["COLUMN_NAME"].to_s.should == "col1"
+    cols["COLUMN_DEFAULT"].to_s.should == "default1"
+    cols["DATA_TYPE"].to_s.should == "type1"
+    cols["IS_NULLABLE"].to_s.should == "YES"
   end
 end
