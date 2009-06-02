@@ -110,9 +110,7 @@ module IRDb
       begin
         rdr = cmd.execute_reader
         while rdr.read
-          
           yield rdr
-          
         end
       ensure
         rdr.dispose if rdr
@@ -141,12 +139,11 @@ module IRDb
         schema = c.get_schema("Columns")
         schema.rows.map do |row|
           if row["TABLE_NAME"].to_s =~ /#{table_name}/i
-            {
-              :name      => row["COLUMN_NAME"].to_s,
-              :default   => row["COLUMN_DEFAULT"].class == System::DBNull ? nil : row["COLUMN_DEFAULT"],
-              :type      => row["DATA_TYPE"].to_s,
-              :nullable? => row["IS_NULLABLE"].to_s == "YES"
-            }
+            result = {}
+            schema.columns.each do |col|
+              result[col.column_name.to_s] = row[col]
+            end
+            result
           end
         end.compact
       end

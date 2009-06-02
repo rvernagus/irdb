@@ -1,4 +1,4 @@
-class System::DBNull; end
+#class System::DBNull; end
 
 class CLRString
   def initialize(value)

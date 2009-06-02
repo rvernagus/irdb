@@ -1,19 +1,16 @@
-require "fake_connection"
-require "fake_command"
-require "fake_parameter"
-require "fake_data_adapter"
-require "fake_data_table"
+require "fake_db_command"
+require "fake_db_parameter"
 
 class FakeProvider
   attr_accessor :connection, :command, :parameter,
                 :data_adapter, :data_table
   
   def initialize
-    self.connection = FakeConnection.new
-    self.command = FakeCommand.new
-    self.parameter = FakeParameter.new
-    self.data_adapter = FakeDataAdapter.new
-    self.data_table = FakeDataTable.new
+    @connection   = mock("DbConnection")
+    @command      = FakeDbCommand.new
+    @parameter    = FakeDbParameter.new
+    @data_adapter = mock("DbDataAdapter")
+    @data_table   = System::Data::DataTable.new
   end
   
   def create_connection

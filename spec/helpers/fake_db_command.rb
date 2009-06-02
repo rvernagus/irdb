@@ -1,4 +1,4 @@
-class FakeCommand< System::Data::Common::DbCommand
+class FakeDbCommand < System::Data::Common::DbCommand
   attr_accessor :connection, :command_text,
                 :transaction, :parameters
 
