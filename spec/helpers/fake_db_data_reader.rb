@@ -1,4 +1,4 @@
-class FakeDataReader < System::Data::Common::DbDataReader
+class FakeDbDataReader < System::Data::Common::DbDataReader
   #attr_reader :data
   #
   #def initialize

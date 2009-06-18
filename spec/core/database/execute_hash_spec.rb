@@ -1,11 +1,10 @@
 describe Database, "execute_hash" do
   before :each do
-    @reader = FakeDataReader.new
     @provider = FakeProvider.new
-    @mockCommand = mock("DbCommand")
-    @mockCommand.should_receive(:command_text=).with("command text")
-    
-    @provider.command = @mockCommand
+    cmd = @provider.command
+    def @cmd.execute_reader
+      return FakeDbDataReader.new
+    end
     @db = Database.new(@provider, "connection string")
   end
   
