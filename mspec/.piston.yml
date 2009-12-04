@@ -1,8 +1,0 @@
---- 
-format: 1
-handler: 
-  commit: cfe394e3b0e995733819235bdea693ea50d164a9
-  branch: master
-repository_url: git://github.com/rubyspec/mspec.git
-lock: false
-repository_class: Piston::Git::Repository
