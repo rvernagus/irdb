@@ -1,11 +1,16 @@
 require "System.Data, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
 
 module System::Data
+  class DataRow
+    def to_hash
+      table.columns.inject({}) { |h, col| h[col.to_s] = self[col]; h }
+    end
+    alias :to_h :to_hash
+  end
+  
   class DataTable
     def to_hash
-      rows.collect do |row|
-        columns.inject({}) { |h, col| h[col.column_name.to_s] = row[col]; h }
-      end
+      rows.collect { |row| row.to_hash }
     end
     alias :to_h :to_hash
   end
@@ -100,7 +105,7 @@ conn.while_open do
   end
 end
 
-# Adds methods to DataTable
+# Adds methods to DataTable and DataRow
 # to_hash | to_h
 conn.while_open do
   table = conn.execute_table "SELECT TOP 10 * FROM Production.Product"
