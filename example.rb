@@ -6,13 +6,19 @@ module System::Data
       table.columns.inject({}) { |h, col| h[col.to_s] = self[col]; h }
     end
     alias :to_h :to_hash
+    
+    def method_missing(symbol, *args, &block)
+      col_name = symbol.to_s
+      super unless table.columns.contains(col_name)
+      self[col_name]
+    end
   end
   
   class DataTable
-    def to_hash
+    def to_array
       rows.collect { |row| row.to_hash }
     end
-    alias :to_h :to_hash
+    alias :to_a :to_array
   end
 end
 
@@ -62,6 +68,23 @@ module System::Data::Common
       get_ordinal(col_name) rescue super
       self[col_name]
     end
+    
+    def current_to_hash
+      h = {}
+      0.upto(visible_field_count - 1) do |i|
+        col_name = get_name(i).to_s
+        h[col_name] = self[i]
+      end
+      h
+    end
+    alias :current_to_h :current_to_hash
+    
+    def to_array
+      rows = []
+      while_read { rows << current_to_hash }
+      rows
+    end
+    alias :to_a :to_array
   end
 end
 
@@ -105,9 +128,32 @@ conn.while_open do
   end
 end
 
+# current_to_hash
+conn.while_open do
+  reader = conn.execute_reader "SELECT TOP 10 * FROM Production.Product"
+  reader.while_read do
+    p reader.current_to_hash
+  end
+end
+
+# to_a
+conn.while_open do
+  reader = conn.execute_reader "SELECT TOP 10 * FROM Production.Product"
+  p reader.to_a
+end
+
 # Adds methods to DataTable and DataRow
-# to_hash | to_h
+# to_array | to_a
 conn.while_open do
   table = conn.execute_table "SELECT TOP 10 * FROM Production.Product"
-  p table.to_h
+  p table.to_a
+end
+
+# Adds methods to DataRow
+# method_missing
+conn.while_open do
+  table = conn.execute_table "SELECT TOP 10 * FROM Production.Product"
+  table.rows.each do |row|
+    p "#{row.productid}, #{row.name}, #{row.productnumber}"
+  end
 end
