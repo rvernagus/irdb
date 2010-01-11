@@ -71,7 +71,7 @@ module System::Data::Common
     
     def current_to_hash
       h = {}
-      0.upto(visible_field_count - 1) do |i|
+      0.upto(field_count - 1) do |i|
         col_name = get_name(i).to_s
         h[col_name] = self[i]
       end
@@ -88,69 +88,111 @@ module System::Data::Common
   end
 end
 
+module Irdb
+  class ActiveTable < System::Data::DataTable
+    class << self
+      @schema = ""
+      def schema(schema_name)
+        @schema = schema_name
+      end
+      
+      def connection=(conn)
+        @conn = conn
+      end
+    
+      def select
+        @conn.while_open do
+          table_name = "#{@schema}.#{name}"
+          table = @conn.execute_table "SELECT TOP 10 * FROM #{table_name}"
+          table.rows.collect { |row| ActiveRow.new(row) }
+        end
+      end  
+    end
+  end
+  
+  class ActiveRow
+    def initialize(row)
+      @row = row
+    end
+    
+    def method_missing(symbol, *args, &block)
+      @row.send(symbol, *args)
+    end
+  end
+end
+
 cstr = "Data Source=(local);Initial Catalog=AdventureWorks;Integrated Security=True"
 conn = System::Data::SqlClient::SqlConnection.new(cstr)
 
+class Product < Irdb::ActiveTable
+  schema "AdventureWorks.Production"
+end
+Product.connection = conn
+
+products = Product.select
+products.each do |prod|
+  p prod.productid
+end
 
 # FEATURES
 
-# Adds methods to DbConnection
-# while_open
-conn.while_open do
-  puts "state => #{conn.state}"
-end
-puts "state => #{conn.state}"
-
-# execute_non_query
-conn.while_open do
-  result = conn.execute_non_query "SELECT COUNT(*) FROM Production.Product"
-  p result
-end
-
-# execute_reader
-conn.while_open do
-  reader = conn.execute_reader "SELECT TOP 10 * FROM Production.Product"
-end
-
-# execute_table
-conn.while_open do
-  table = conn.execute_table "SELECT TOP 10 * FROM Production.Product"
-  puts "Table has #{table.rows.count} rows"
-end
-
-# Adds methods to DbDataReader
-# while_read
-conn.while_open do
-  reader = conn.execute_reader "SELECT TOP 10 * FROM Production.Product"
-  reader.while_read do
-    # method_missing
-    p "#{reader.productid}, #{reader.name}, #{reader.productnumber}"
-  end
-end
-
-# current_to_hash
-conn.while_open do
-  reader = conn.execute_reader "SELECT TOP 10 * FROM Production.Product"
-  reader.while_read do
-    p reader.current_to_hash
-  end
-end
-
-# to_a
-conn.while_open do
-  reader = conn.execute_reader "SELECT TOP 10 * FROM Production.Product"
-  p reader.to_a
-end
-
-# Adds methods to DataTable and DataRow
-# to_array | to_a
-conn.while_open do
-  table = conn.execute_table "SELECT TOP 10 * FROM Production.Product"
-  p table.to_a
-end
-
-# Adds methods to DataRow
-# method_missing
+## Adds methods to DbConnection
+## while_open
+#conn.while_open do
+#  puts "state => #{conn.state}"
+#end
+#puts "state => #{conn.state}"
+#
+## execute_non_query
+#conn.while_open do
+#  result = conn.execute_non_query "SELECT COUNT(*) FROM Production.Product"
+#  p result
+#end
+#
+## execute_reader
+#conn.while_open do
+#  reader = conn.execute_reader "SELECT TOP 10 * FROM Production.Product"
+#end
+#
+## execute_table
+#conn.while_open do
+#  table = conn.execute_table "SELECT TOP 10 * FROM Production.Product"
+#  puts "Table has #{table.rows.count} rows"
+#end
+#
+## Adds methods to DbDataReader
+## while_read
+#conn.while_open do
+#  reader = conn.execute_reader "SELECT TOP 10 * FROM Production.Product"
+#  reader.while_read do
+#    # method_missing
+#    p "#{reader.productid}, #{reader.name}, #{reader.productnumber}"
+#  end
+#end
+#
+## current_to_hash
+#conn.while_open do
+#  reader = conn.execute_reader "SELECT TOP 10 * FROM Production.Product"
+#  reader.while_read do
+#    p reader.current_to_hash
+#  end
+#end
+#
+## to_a
+#conn.while_open do
+#  reader = conn.execute_reader "SELECT TOP 10 * FROM Production.Product"
+#  p reader.to_a
+#end
+#
+## Adds methods to DataTable and DataRow
+## to_array | to_a
+#conn.while_open do
+#  table = conn.execute_table "SELECT TOP 10 * FROM Production.Product"
+#  p table.to_a
+#end
+#
+## Adds methods to DataRow
+## method_missing
 conn.while_open do
   table = conn.execute_table "SELECT TOP 10 * FROM Production.Product"
   table.rows.each do |row|

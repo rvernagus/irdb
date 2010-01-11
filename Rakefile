@@ -1,26 +1,12 @@
-require "hoe"
-require "lib/irdb"
+require 'rake'
+require 'rake/testtask'
 
-task :default => "spec:core"
-
-Hoe.spec "irdb" do
-  developer "Ray Vernagus", "r.vernagus@gmail.com"
+test_files_pattern = 'test/**/*_test.rb'
+Rake::TestTask.new do |t|
+  t.libs << 'lib'
+  t.pattern = test_files_pattern
+  t.verbose = false
 end
 
-namespace :spec do |n|
-  task :core do |t|
-    puts `ruby mspec/bin/mspec -B spec/core.mspec`
-  end
-  
-  task :core_ir do |t|
-    puts `ir mspec/bin/mspec -B spec/core_ir.mspec`
-  end
-  
-  task :oracle do |t|
-    puts `ir mspec/bin/mspec -B spec/oracle.mspec`
-  end
-  
-  task :sql_server do |t|
-    puts `ir mspec/bin/mspec -B spec/sql_server.mspec`
-  end
-end
+desc 'Default: run tests.'
+task :default => ['test']
