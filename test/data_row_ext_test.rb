@@ -8,13 +8,11 @@ class DataRowExtensions < Test::Unit::TestCase
     
     context 'when table has no columns' do
       setup do
-        @row = @table.new_row      
+        @result = @table.new_row.to_hash
       end
       
       should 'returns empty hash' do
-        result = @row.to_hash
-        
-        assert_equal({}, result)
+        assert_equal({}, @result)
       end
     end
     
@@ -23,15 +21,15 @@ class DataRowExtensions < Test::Unit::TestCase
         @table.columns.add 'col1', String.to_clr_type
         @table.columns.add 'col2', String.to_clr_type
       
-        @row = @table.new_row      
+        row = @table.new_row
+        row['col1'] = 'value1'
+        row['col2'] = 'value2'
+        @result = row.to_hash
       end
       
       should 'returns hash of column names and values' do
-        @row['col1'] = 'value1'
-        @row['col2'] = 'value2'
-        result = @row.to_hash
-        
-        assert_equal({ 'col1' => 'value1', 'col2' => 'value2' }, result)
+        assert_equal @result['col1'], 'value1'
+        assert_equal @result['col2'], 'value2'
       end
     end
   end
