@@ -12,7 +12,7 @@ class DataRowExtensions < Test::Unit::TestCase
       end
       
       should 'returns empty hash' do
-        assert_equal({}, @result)
+        assert_equal @result, {}
       end
     end
     
@@ -28,8 +28,12 @@ class DataRowExtensions < Test::Unit::TestCase
       end
       
       should 'returns hash of column names and values' do
-        assert_equal @result['col1'], 'value1'
-        assert_equal @result['col2'], 'value2'
+        assert_equal 'value1', @result['col1']
+        assert_equal 'value2', @result['col2']
+      end
+      
+      should 'call to_s on column to get key' do
+        assert @result.has_key?('col1')
       end
     end
   end
