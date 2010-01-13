@@ -1,9 +1,14 @@
 require File.join(File.dirname(__FILE__), 'test_helper')
 
 class DataRowExtensions < Test::Unit::TestCase
-  context 'to_hash' do
+  context 'to_h' do
     setup do
       @table = System::Data::DataTable.new
+    end
+    
+    should "have to_hash alias" do
+      row = @table.new_row
+      assert_equal row.method(:to_hash), row.method(:to_h)
     end
     
     context 'when table has no columns' do
@@ -27,13 +32,13 @@ class DataRowExtensions < Test::Unit::TestCase
         @result = row.to_hash
       end
       
-      should 'returns hash of column names and values' do
-        assert_equal 'value1', @result['col1']
-        assert_equal 'value2', @result['col2']
-      end
-      
       should 'call to_s on column to get key' do
         assert @result.has_key?('col1')
+      end
+      
+      should 'keys should have expected values' do
+        assert_equal 'value1', @result['col1']
+        assert_equal 'value2', @result['col2']
       end
     end
   end
