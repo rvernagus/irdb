@@ -11,4 +11,11 @@ module System::Data
       self[col_name]
     end
   end
+  
+  class DataTable
+    def to_array
+      rows.collect { |row| row.to_hash }
+    end
+    alias :to_a :to_array
+  end
 end

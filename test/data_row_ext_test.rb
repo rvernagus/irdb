@@ -7,7 +7,7 @@ class DataRowExtensions < Test::Unit::TestCase
       @row   = @table.new_row
     end
 
-    should 'have to_hash alias' do
+    should 'have to_h alias' do
       assert_equal @row.method(:to_hash), @row.method(:to_h)
     end
       
@@ -37,13 +37,13 @@ class DataRowExtensions < Test::Unit::TestCase
       assert_equal 'value2', @row.to_h['col2']
     end
     
-    should "raise NoMethodError when method name does not match a column name" do
+    should 'raise NoMethodError when method name does not match a column name' do
       assert_raise NoMethodError do
         @row.col3
       end
     end
     
-    should "return value of column if method name matches column name" do
+    should 'return value of column if method name matches column name' do
       assert_equal 'value1', @row.col1
     end
   end
