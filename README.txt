@@ -33,6 +33,7 @@ Or run at the command line:
 
 * IronRuby
 * hoe
+* shoulda
 
 == INSTALL (not yet available):
 
