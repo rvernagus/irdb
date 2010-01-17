@@ -80,7 +80,7 @@ module ActiveRecord
       connection = factory.create_connection
       connection.connection_string = config[:connection_string]
       
-      ConnectionAdapters::IrdbAdapter.new(connection, logger, config)
+      ConnectionAdapters::IrdbAdapter.new(connection, logger)
     end
   end
   
@@ -89,9 +89,9 @@ module ActiveRecord
     end
     
     class IrdbAdapter < AbstractAdapter
-      def initialize(connection, logger, config)
-        super(connection, logger)
-      end
+      #def initialize(connection, logger, config)
+      #  super(connection, logger)
+      #end
       
       #def quote(value, column = nil)
       #  p "===> quote #{value.inspect} #{column.inspect}"
@@ -107,31 +107,27 @@ module ActiveRecord
       #def quote_string(string) #:nodoc:
       #  "'#{string}'"
       #end
-      
-      def select(sql, name = nil)
-        puts "===> select #{sql.inspect}"
-        @connection.while_open do
-          reader = @connection.execute_reader(sql)
-          reader.to_a
-        end
-      end
-      
+
       def execute(sql, name = nil) #:nodoc:
         puts "===> execute #{sql.inspect}"
         log(sql, name) do
-          @connection.while_open do
-            @connection.execute_non_query sql
+          cmd = @connection.command(sql)
+          if block_given?
+            @connection.while_open { yield cmd }
+          else
+            @connection.while_open { cmd.execute_non_query }
           end
         end
+      end
+      
+      def select(sql, name = nil)
+        puts "===> select #{sql.inspect}"
+        execute(sql, name) { |cmd| cmd.execute_reader.to_a }
       end
       
       def execute_scalar(sql, name = nil) #:nodoc:
         puts "===> execute_scalar #{sql.inspect}"
-        log(sql, name) do
-          @connection.while_open do
-            @connection.execute_scalar sql
-          end
-        end
+        execute(sql, name) { |cmd| cmd.execute_scalar }
       end
       
       def insert(sql, name = nil, pk = nil, id_value = nil, sequence_name = nil)
@@ -142,8 +138,8 @@ module ActiveRecord
       
       def columns(table_name, name = nil)#:nodoc:
         puts "===> columns #{table_name.inspect}"
-        @connection.while_open do
-          reader = @connection.execute_reader("SELECT TOP 1 * FROM #{table_name}")
+        execute("SELECT TOP 1 * FROM #{table_name}", name) do |cmd|
+          reader = cmd.execute_reader
           schema_table = reader.get_schema_table
           schema_table.rows.collect do |schema_row|
             IrdbColumn.new(schema_row['ColumnName'].to_s, nil, schema_row['DataTypeName'], schema_row['AllowDbNull'])
