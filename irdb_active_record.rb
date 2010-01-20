@@ -1,4 +1,4 @@
-require 'System.Data, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'
+require 'System.Data'
 require 'lib/irdb'
 
 module System::Data::Common
@@ -101,7 +101,7 @@ module ActiveRecord
       
       def quote_column_name(name) #:nodoc:
         puts "===> quote_column_name #{name.inspect}"
-        "[#{name}]"
+        name =~ /\[.+\]/ ? name : "[#{name}]" 
       end
 
       #def quote_string(string) #:nodoc:
@@ -156,7 +156,7 @@ module ActiveRecord
       end
       
       def add_limit_offset!(sql, options) #:nodoc:
-        puts "===> add_limit_offset! #{sql.inspect}"
+        puts "===> add_limit_offset! #{sql.inspect} #{options.inspect}"
         if limit = options[:limit]
           limit = sanitize_limit(limit)
           unless offset = options[:offset]
