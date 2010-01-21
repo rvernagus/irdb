@@ -99,6 +99,30 @@ module ActiveRecord
       #  value
       #end
       
+      def native_database_types #:nodoc:
+        puts "===> native_database_types"
+        {
+          :primary_key => "int NOT NULL IDENTITY(1, 1) PRIMARY KEY",
+          :string => { :name => 'varchar', :limit => 255 },
+          :text => { :name => 'varchar', :limit => :max },
+          :integer => { :name => "int", :limit => 4 },
+          :float => { :name => "float", :limit => 8 },
+          :decimal => { :name => "decimal" },
+          :datetime => { :name => "datetime" },
+          :timestamp => { :name => "datetime" },
+          :time => { :name => "datetime" },
+          :date => { :name => "datetime" },
+          :binary => { :name => 'varbinary', :limit => :max },
+          :boolean => { :name => "bit"},
+          :char => { :name => 'char' },
+          :varchar_max => { :name => 'varchar', :limit => :max },
+          :nchar => { :name => "nchar" },
+          :nvarchar => { :name => "nvarchar", :limit => 255 },
+          :nvarchar_max => { :name => "nvarchar", :limit => :max },
+          :ntext => { :name => "ntext" }
+        }
+      end
+      
       def quote_column_name(name) #:nodoc:
         puts "===> quote_column_name #{name.inspect}"
         name =~ /\[.+\]/ ? name : "[#{name}]" 
@@ -149,10 +173,12 @@ module ActiveRecord
       
       def type_to_sql(type, limit = nil, precision = nil, scale = nil)
         puts "===> type_to_sql #{type.inspect}"
+        super
       end
       
       def pk_and_sequence_for(table_name)
         puts "==> pk_and_sequence_for #{table_name.inspect}"
+        super
       end
       
       def add_limit_offset!(sql, options) #:nodoc:

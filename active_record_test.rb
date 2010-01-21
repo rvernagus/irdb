@@ -4,28 +4,50 @@ require 'active_record'
 ActiveRecord::Base.establish_connection(
   :adapter           => 'irdb',
   :provider          => 'System.Data.SqlClient',
-  :connection_string => 'Data Source=(local);Initial Catalog=NorthWind;Integrated Security=True'
+  :connection_string => 'Data Source=(local);Initial Catalog=test;Integrated Security=True'
 )
 
-class Product < ActiveRecord::Base
-  set_primary_key "ProductID"
+class CreatePeople < ActiveRecord::Migration
+  def self.up
+    create_table :people do |t|
+      t.string :first_name
+      t.string :last_name
+      t.text   :info
+    end
+  end
+  
+  def self.down
+    drop_table :people
+  end
 end
 
-class Customer < ActiveRecord::Base
-  set_primary_key "CustomerID"
-  has_many :orders, :finder_sql => 'SELECT * FROM Orders WHERE CustomerID = \'#{id}\''
-  #:foreign_key => "[CustomerID]", :primary_key => "CustomerID"
+CreatePeople.down
+CreatePeople.up
+
+class Person < ActiveRecord::Base
+  
 end
 
-class Order < ActiveRecord::Base
-  set_primary_key "OrderID"
-end
+Person.create(:first_name => 'Ray', :last_name => 'Vernagus')
 
-class OrderDetail < ActiveRecord::Base
-  set_table_name "[Order Details]"
-  belongs_to :product, :foreign_key => "[ProductID]"
-  belongs_to :order, :foreign_key => "[OrderID]"
-end
+#class Product < ActiveRecord::Base
+#  set_primary_key "ProductID"
+#end
+#
+#class Customer < ActiveRecord::Base
+#  set_primary_key "CustomerID"
+#  has_many :orders, :finder_sql => 'SELECT * FROM Orders WHERE CustomerID = \'#{id}\''
+#end
+#
+#class Order < ActiveRecord::Base
+#  set_primary_key "OrderID"
+#end
+#
+#class OrderDetail < ActiveRecord::Base
+#  set_table_name "[Order Details]"
+#  belongs_to :product, :foreign_key => "[ProductID]"
+#  belongs_to :order, :foreign_key => "[OrderID]"
+#end
 
 #puts "\nall\n------------------"
 #puts "Found #{Product.all.length} Products!"
@@ -67,11 +89,11 @@ end
 #  "OrderDate > :order_date",
 #  { :order_date => '5/1/1998' }
 #])
-
-detail = OrderDetail.find(:first)
-p detail
-p detail.product
-p detail.order
-
-customer = Customer.find(:first)
-p customer.orders
+#
+#detail = OrderDetail.find(:first)
+#p detail
+#p detail.product
+#p detail.order
+#
+#customer = Customer.find(:first)
+#p customer.orders
